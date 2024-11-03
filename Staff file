@@ -31,7 +31,21 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-// GET STAFF //
+// POST STAFF
+app.post('/addStaff', (req, res) => {
+    const { name, email, password , gender, role } = req.body; // Assuming staff data is in request body
+    const sql = "INSERT INTO Staff (name, email, password, gender, role) VALUES (?, ?, ?, ?, ?)";
+    db.query(sql, [name, email, password ,gender, role], (err, result) => {
+        if (err) {
+            console.error('Error adding staff:', err);
+            res.status(500).send('Error adding staff');
+            return;
+        }
+        res.send('Staff member added successfully!');
+    });
+});
+
+// GET STAFF
 app.get ('/getStaff', (req, res) => {
     console.log('req.body:', req.body);
     db.query('SELECT * FROM Staff',(err, results) => {
@@ -44,19 +58,60 @@ app.get ('/getStaff', (req, res) => {
     });
 });
 
-// POST STAFF //
-app.post('/addStaff', (req, res) => {
-    const { name, email, gender, role } = req.body; // Assuming staff data is in request body
-    const sql = "INSERT INTO Staff (name, email, gender, role) VALUES (?, ?, ?, ?)";
-    db.query(sql, [name, email, gender, role], (err, result) => {
-        if (err) {
-            console.error('Error adding staff:', err);
-            res.status(500).send('Error adding staff');
-            return;
-        }
-        res.send('Staff member added successfully!');
+//UPDATE STAFF
+app.put('/updateStaff', (req,res) => {
+    const { staff_id, name, email, password } = req.body;
+    const query = `UPDATE Staff SET name = '${name}', email = '${email}', password = '${password}' WHERE staff_id = ${staff_id}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Staff member has been updated successfully');
     });
 });
 
-//app.put();
-//app.delete();
+//DELETE STAFF "I used DELETE instead of POST"
+app.delete('/deleteStaff', (req,res) => {
+    const { staff_id } = req.body;
+    const query = `DELETE FROM Staff WHERE staff_id = ${staff_id}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Staff member deleted successfully');
+    });
+});
+
+//LOGIN (STAFF) - I wrote /loginStaff instead of Login only
+app.post('/loginStaff', (req, res) => {
+    const { email, password } = req.body;
+    const query = 'SELECT * FROM Staff WHERE email = ? AND password = ?';
+
+    db.query(query, [email, password], (err, results) => {
+        if(err) {
+            console.error('Error during login:', err);
+            res.status(500).send('Server error');
+            return;
+        }
+
+        if (results.length > 0) {
+            res.send('Login successful');
+        } else {
+            res.status(401).send('Invalid credentials');
+        }
+    });
+});
+
+//SEARCH API (STAFF)
+app.get('/searchStaff', (req, res) => {
+    const { term } = req.query;
+    const query = 'SELECT * FROM Staff WHERE name LIKE ? OR email LIKE ?';
+
+    db.query(query, [`%${term}%`, `%${term}%`], (err, results) => {
+        if(err) {
+            console.error('Error during search:', err);
+            res.status(500).send('Error during search');
+            return;
+        }
+
+        res.json(results);
+    });
+});
+
+// [] 
