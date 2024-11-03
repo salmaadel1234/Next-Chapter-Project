@@ -1,0 +1,62 @@
+//THESE ARE THE PACKAGES THAT WE HAVE JUST INSTALLED//
+const express = require('express');
+const bodyParser = require('body-Parser');
+const mysql = require('mysql2');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const app = express();
+app.use(bodyParser.json());
+
+//THESE LINES ARE FOR GETTING THE DATA FROM THE DATABASE//    
+const db = mysql.createConnection ({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+});
+
+db.connect((err) => {
+    if(err) throw err;
+    console.log('Connected to MySQL');
+});
+
+app.get ('/', (req, res) => {
+    res.send('Backend is working!'); //THE RESPONSE SENDS A MESSAGE TO TELL ME THAT EVERYTHING IS RUNNING SMOOTHLY//
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
+// GET STAFF //
+app.get ('/getStaff', (req, res) => {
+    console.log('req.body:', req.body);
+    db.query('SELECT * FROM Staff',(err, results) => {
+        if(err) {
+            console.error('Error fetching staff members:', err);
+            res.status(500).send('Error fetching staff members');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+// POST STAFF //
+app.post('/addStaff', (req, res) => {
+    const { name, email, gender, role } = req.body; // Assuming staff data is in request body
+    const sql = "INSERT INTO Staff (name, email, gender, role) VALUES (?, ?, ?, ?)";
+    db.query(sql, [name, email, gender, role], (err, result) => {
+        if (err) {
+            console.error('Error adding staff:', err);
+            res.status(500).send('Error adding staff');
+            return;
+        }
+        res.send('Staff member added successfully!');
+    });
+});
+
+//app.put();
+//app.delete();
