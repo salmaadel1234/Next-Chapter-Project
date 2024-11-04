@@ -1,0 +1,13 @@
+// POST (SPONSOR)
+app.post('/addSponsor', (req, res) => {
+    const { sponsor_name, email, password , Address, description, end_date, start_date } = req.body;
+    const sql = "INSERT INTO Sponsor (sponsor_name, email, password , Address, description, end_date, start_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [sponsor_name, email, password , Address, description, end_date, start_date], (err, result) => {
+        if (err) {
+            console.error('Error adding sponsor:', err);
+            res.status(500).send('Error adding sponsor');
+            return;
+        }
+        res.send('Sponsor has been added successfully!');
+    });
+});
