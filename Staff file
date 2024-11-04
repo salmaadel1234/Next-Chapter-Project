@@ -31,6 +31,8 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
+//STAFF ENTITIES :
+
 // POST STAFF
 app.post('/addStaff', (req, res) => {
     const { name, email, password , gender, role } = req.body; // Assuming staff data is in request body
@@ -45,7 +47,7 @@ app.post('/addStaff', (req, res) => {
     });
 });
 
-// GET STAFF
+// GET (STAFF)
 app.get ('/getStaff', (req, res) => {
     console.log('req.body:', req.body);
     db.query('SELECT * FROM Staff',(err, results) => {
@@ -58,7 +60,7 @@ app.get ('/getStaff', (req, res) => {
     });
 });
 
-//UPDATE STAFF
+//UPDATE (STAFF)
 app.put('/updateStaff', (req,res) => {
     const { staff_id, name, email, password } = req.body;
     const query = `UPDATE Staff SET name = '${name}', email = '${email}', password = '${password}' WHERE staff_id = ${staff_id}`;
@@ -68,9 +70,9 @@ app.put('/updateStaff', (req,res) => {
     });
 });
 
-//DELETE STAFF "I used DELETE instead of POST"
+//DELETE (STAFF) "I used DELETE instead of POST & used req.query instead of req.body
 app.delete('/deleteStaff', (req,res) => {
-    const { staff_id } = req.body;
+    const { staff_id } = req.query;
     const query = `DELETE FROM Staff WHERE staff_id = ${staff_id}`;
     db.query(query, (err, result) => {
         if(err) throw err;
@@ -100,18 +102,25 @@ app.post('/loginStaff', (req, res) => {
 
 //SEARCH API (STAFF)
 app.get('/searchStaff', (req, res) => {
-    const { term } = req.query;
-    const query = 'SELECT * FROM Staff WHERE name LIKE ? OR email LIKE ?';
+    const { name,  email, gender } = req.query;
+    const query = 'SELECT * FROM Staff WHERE name LIKE ? OR email LIKE ? OR gender LIKE ?';
 
-    db.query(query, [`%${term}%`, `%${term}%`], (err, results) => {
+    db.query(query, [`%${name}%`, `%${email}%`, `${gender}`], (err, results) => {
         if(err) {
             console.error('Error during search:', err);
             res.status(500).send('Error during search');
             return;
         }
 
-        res.json(results);
+        res.json({message: 'Success', staff: results});
     });
 });
 
-// [] 
+// -------------------------------------------------------------------------- //
+
+// POST (SPONSOR)
+
+
+// GET (SPONSOR)
+// UPDATE (SPONSOR)
+// DELETE (SPONSOR)
