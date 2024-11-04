@@ -1,3 +1,5 @@
+// -----------------------------------------------------"SPONSOR"SECTION------------------------------------------------------ //
+
 // POST (SPONSOR)
 app.post('/addSponsor', (req, res) => {
     const { sponsor_name, email, password , Address, description, end_date, start_date } = req.body;
@@ -9,5 +11,74 @@ app.post('/addSponsor', (req, res) => {
             return;
         }
         res.send('Sponsor has been added successfully!');
+    });
+});
+
+// GET (SPONSOR)
+app.get ('/getSponsor', (req, res) => {
+    console.log('req.body:', req.body);
+    db.query('SELECT * FROM Sponsor',(err, results) => {
+        if(err) {
+            console.error('Error fetching sponsors:', err);
+            res.status(500).send('Error fetching sponsors');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+// UPDATE (SPONSOR)
+app.put('/updateSponsor', (req,res) => {
+    const { sponsor_id, sponsor_name, email, end_date, start_date } = req.body;
+    const query = `UPDATE Sponsor SET sponsor_name = '${sponsor_name}', email = '${email}', end_date = '${end_date}',  start_date = '${start_date}' WHERE sponsor_id = ${sponsor_id}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Sponsor has been updated successfully');
+    });
+});
+
+// DELETE (SPONSOR)
+app.delete('/deleteSponsor', (req,res) => {
+    const { sponsor_id } = req.query;
+    const query = `DELETE FROM Sponsor WHERE sponsor_id = ${sponsor_id}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Sponsor deleted successfully');
+    });
+});
+
+// LOGIN (SPONSOR)
+app.post('/loginSponsor', (req, res) => {
+    const { email, password } = req.body;
+    const query = 'SELECT * FROM Sponsor WHERE email = ? AND password = ?';
+
+    db.query(query, [email, password], (err, results) => {
+        if(err) {
+            console.error('Error during login:', err);
+            res.status(500).send('Server error');
+            return;
+        }
+
+        if (results.length > 0) {
+            res.send('Login successful');
+        } else {
+            res.status(401).send('Invalid credentials');
+        }
+    });
+});
+
+// SEARCH (SPONSOR)
+app.get('/searchSponsor', (req, res) => {
+    const { sponsor_name,  email, start_date, end_date } = req.query;
+    const query = 'SELECT * FROM Sponsor WHERE sponsor_name LIKE ? OR email LIKE ? OR start_date LIKE ? OR end_date LIKE ?';
+
+    db.query(query, [`%${sponsor_name}%`, `%${email}%`, `%${start_date}%`, `%${end_date}%`], (err, results) => {
+        if(err) {
+            console.error('Error during search:', err);
+            res.status(500).send('Error during search');
+            return;
+        }
+
+        res.json({message: 'Successful', sponsor: results});
     });
 });
