@@ -1,0 +1,64 @@
+// -----------------------------------------------------"DONATION"SECTION------------------------------------------------------ //
+
+// POST (DONATION)
+app.post('/addDonation', (req, res) => {
+    const { donation_status, donation_note, type , amount, unit, date, staff_id_fk, sponsor_id_fk } = req.body;
+    const sql = "INSERT INTO Donation (donation_status, donation_note, type , amount, unit, date, staff_id_fk, sponsor_id_fk) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [donation_status, donation_note, type , amount, unit, date, staff_id_fk, sponsor_id_fk], (err, result) => {
+        if (err) {
+            console.error('Error adding donation:', err);
+            res.status(500).send('Error adding donation');
+            return;
+        }
+        res.send('Donation has been added successfully!');
+    });
+});
+
+// GET (DONATION)
+app.get ('/getDonation', (req, res) => {
+    console.log('req.body:', req.body);
+    db.query('SELECT * FROM Donation',(err, results) => {
+        if(err) {
+            console.error('Error fetching donations:', err);
+            res.status(500).send('Error fetching donations');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+// UPDATE (DONATION)
+app.put('/updateDonation', (req,res) => {
+    const { donation_code, donation_status, type, amount, unit } = req.body;
+    const query = `UPDATE Donation SET donation_status = '${donation_status}', type = '${type}', amount = '${amount}',  unit = '${unit}' WHERE donation_code = ${donation_code}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Donation has been updated successfully');
+    });
+});
+
+// DELETE (DONATION)
+app.delete('/deleteDonation', (req,res) => {
+    const { donation_code } = req.query;
+    const query = `DELETE FROM Donation WHERE donation_code = ${donation_code}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Donation deleted successfully');
+    });
+});
+
+// SEARCH (DONATION)
+app.get('/searchDonation', (req, res) => {
+    const { donation_status,  type, unit, amount, date } = req.query;
+    const query = 'SELECT * FROM Donation WHERE donation_status LIKE ? OR type LIKE ? OR unit LIKE ? OR amount LIKE ? OR date LIKE ? ';
+
+    db.query(query, [`%${donation_status}%`, `%${type}%`, `%${unit}%`, `%${amount}%`, `%${date}%` ], (err, results) => {
+        if(err) {
+            console.error('Error during search:', err);
+            res.status(500).send('Error during search');
+            return;
+        }
+
+        res.json({message: 'Successful', Donation: results});
+    });
+});
