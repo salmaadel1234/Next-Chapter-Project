@@ -267,6 +267,90 @@ app.get('/searchDonation', (req, res) => {
 });
 
 // -----------------------------------------------------"ORPHAN" SECTION------------------------------------------------------ //
+
+// POST (ORPHAN)
+app.post('/addOrphan', (req, res) => {
+    const { orphan_name, gender, email, password, edu_level, age, DOB, DOA } = req.body;
+    const sql = "INSERT INTO Orphan ( orphan_name, gender, email, password, edu_level, age, DOB, DOA ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [ orphan_name, gender, email, password, edu_level, age, DOB, DOA ], (err, result) => {
+        if (err) {
+            console.error('Error adding orphan:', err);
+            res.status(500).send('Error adding orphan');
+            return;
+        }
+        res.send('Orphan has been added successfully!');
+    });
+});
+
+// GET (ORPHAN)
+app.get ('/getOrphan', (req, res) => {
+    console.log('req.body:', req.body);
+    db.query('SELECT * FROM Orphan',(err, results) => {
+        if(err) {
+            console.error('Error fetching orphan:', err);
+            res.status(500).send('Error fetching orphan');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+// UPDATE (ORPHAN)
+app.put('/updateOrphan', (req,res) => {
+    const { orphan_id, orphan_name, email, password } = req.body;
+    const query = `UPDATE Orphan SET orphan_name = '${orphan_name}', email = '${email}', password = '${password}', WHERE orphan_id = ${orphan_id}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Orphan has been updated successfully');
+    });
+});
+
+// DELETE (ORPHAN)
+app.delete('/deleteOrphan', (req,res) => {
+    const { orphan_id} = req.query;
+    const query = `DELETE FROM Orphan WHERE orphan_id = ${orphan_id}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Orphan deleted successfully');
+    });
+});
+
+// LOGIN (ORPHAN)
+app.post('/loginOrphan', (req, res) => {
+    const { email, password } = req.body;
+    const query = 'SELECT * FROM Orphan WHERE email = ? AND password = ?';
+
+    db.query(query, [email, password], (err, results) => {
+        if(err) {
+            console.error('Error during login:', err);
+            res.status(500).send('Server error');
+            return;
+        }
+
+        if (results.length > 0) {
+            res.send('Login successful');
+        } else {
+            res.status(401).send('Invalid credentials');
+        }
+    });
+});
+
+// SEARCH (ORPHAN)
+app.get('/searchOrphan', (req, res) => {
+    const { orphan_name, gender, email, edu_level, age } = req.query;
+    const query = 'SELECT * FROM Orphan WHERE orphan_name LIKE ? OR gender LIKE ? OR email LIKE ? OR edu_level LIKE ? OR age LIKE ? ';
+
+    db.query(query, [`%${orphan_name}%`, `${gender}`, `%${email}%`, `%${edu_level}%`, `%${age}%` ], (err, results) => {
+        if(err) {
+            console.error('Error during search:', err);
+            res.status(500).send('Error during search');
+            return;
+        }
+
+        res.json({message: 'Successful', Orphan: results});
+    });
+});
+
 // -----------------------------------------------------"COURSE"SECTION------------------------------------------------------ //
 // -----------------------------------------------------"FEEDBACK"SECTION------------------------------------------------------ //
 // -----------------------------------------------------"LOGIN"SECTION------------------------------------------------------ //
