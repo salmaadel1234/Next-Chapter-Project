@@ -1,0 +1,64 @@
+//----------------------------------------------------------"FEEDBACK"-SECTION----------------------------------------------------------------//
+
+// POST (FEEDBACK)
+app.post('/addfeedback', (req, res) => {
+    const { feedback_no, feedback_status, feedback_date, description, staff_id_fk, orphan_id_fk } = req.body;
+    const sql = "INSERT INTO feedback ( feedback_no, feedback_status, feedback_date, description, staff_id_fk, orphan_id_fk ) VALUES (?, ?, ?, ?, ?, ?)";
+    db.query(sql, [ feedback_no, feedback_status, feedback_date, description, staff_id_fk, orphan_id_fk ], (err, result) => {
+        if (err) {
+            console.error('Error adding feedback:', err);
+            res.status(500).send('Error adding feedback');
+            return;
+        }
+        res.send('Feedback has been added successfully!');
+    });
+});
+
+// GET (FEEDBACK)
+app.get ('/getfeedback', (req, res) => {
+    console.log('req.body:', req.body);
+    db.query('SELECT * FROM feedback',(err, results) => {
+        if(err) {
+            console.error('Error fetching feedback:', err);
+            res.status(500).send('Error fetching feedback');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+// UPDATE (FEEDBACK)
+app.put('/updatefeedback', (req,res) => {
+    const { feedback_no, feedback_status } = req.body;
+    const query = `UPDATE feedback SET feedback_status = '${feedback_status}' WHERE feedback_no = ${feedback_no}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Feedback updated successfully');
+    });
+});
+
+// DELETE (FEEDBACK)
+app.delete('/deletefeedback', (req,res) => {
+    const { feedback_no } = req.query;
+    const query = `DELETE FROM feedback WHERE feedback_no = ${feedback_no}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('feedback deleted successfully');
+    });
+});
+
+// SEARCH (FEEDBACK)
+app.get('/searchfeedback', (req, res) => {
+    const { feedback_status, feedback_date, description, staff_id_fk, orphan_id_fk } = req.query;
+    const query = 'SELECT * FROM feedback WHERE feedback_status LIKE ? OR feedback_date LIKE ? OR description LIKE ? OR staff_id_fk LIKE ? OR orphan_id_fk LIKE ? ';
+
+    db.query(query, [`%${feedback_status}%`, `%${feedback_date}%`, `%${description}%`, `%${staff_id_fk}%`, `%${orphan_id_fk}%`], (err, results) => {
+        if(err) {
+            console.error('Error during search:', err);
+            res.status(500).send('Error during search');
+            return;
+        }
+
+        res.json({message: 'Successful', Feedback: results});
+    });
+});
