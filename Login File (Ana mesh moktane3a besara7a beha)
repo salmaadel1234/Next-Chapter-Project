@@ -1,0 +1,15 @@
+//----------------------------------------------------------"LOGIN"-SECTION----------------------------------------------------------------//
+
+// POST (LOGIN)
+app.post('/addLogin', (req, res) => {
+    const { email, password, staff_id_fk, orphan_id_fk, sponsor_id_fk } = req.body;
+    const sql = "INSERT INTO Login ( email, password, staff_id_fk, orphan_id_fk, sponsor_id_fk ) VALUES (?, ?, ?, ?, ?)";
+    db.query(sql, [ email, password, staff_id_fk, orphan_id_fk, sponsor_id_fk ], (err, result) => {
+        if (err) {
+            console.error('Error validating login:', err);
+            res.status(500).send('Error validating login');
+            return;
+        }
+        res.send('Login successful!');
+    });
+});
