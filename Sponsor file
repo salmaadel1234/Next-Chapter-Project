@@ -1,7 +1,9 @@
-// -----------------------------------------------------"SPONSOR"SECTION------------------------------------------------------ //
+const express = require('express');
+const router = express.Router();
+const db = require('../db/db')
 
 // POST (SPONSOR)
-app.post('/addSponsor', (req, res) => {
+router.post('/addSponsor', (req, res) => {
     const { sponsor_name, email, password , Address, description, end_date, start_date } = req.body;
     const sql = "INSERT INTO Sponsor (sponsor_name, email, password , Address, description, end_date, start_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
     db.query(sql, [sponsor_name, email, password , Address, description, end_date, start_date], (err, result) => {
@@ -15,7 +17,7 @@ app.post('/addSponsor', (req, res) => {
 });
 
 // GET (SPONSOR)
-app.get ('/getSponsor', (req, res) => {
+router.get ('/getSponsor', (req, res) => {
     console.log('req.body:', req.body);
     db.query('SELECT * FROM Sponsor',(err, results) => {
         if(err) {
@@ -28,7 +30,7 @@ app.get ('/getSponsor', (req, res) => {
 });
 
 // UPDATE (SPONSOR)
-app.put('/updateSponsor', (req,res) => {
+router.put('/updateSponsor', (req,res) => {
     const { sponsor_id, sponsor_name, email, end_date, start_date } = req.body;
     const query = `UPDATE Sponsor SET sponsor_name = '${sponsor_name}', email = '${email}', end_date = '${end_date}',  start_date = '${start_date}' WHERE sponsor_id = ${sponsor_id}`;
     db.query(query, (err, result) => {
@@ -38,7 +40,7 @@ app.put('/updateSponsor', (req,res) => {
 });
 
 // DELETE (SPONSOR)
-app.delete('/deleteSponsor', (req,res) => {
+router.delete('/deleteSponsor', (req,res) => {
     const { sponsor_id } = req.query;
     const query = `DELETE FROM Sponsor WHERE sponsor_id = ${sponsor_id}`;
     db.query(query, (err, result) => {
@@ -48,7 +50,7 @@ app.delete('/deleteSponsor', (req,res) => {
 });
 
 // LOGIN (SPONSOR)
-app.post('/loginSponsor', (req, res) => {
+router.post('/loginSponsor', (req, res) => {
     const { email, password } = req.body;
     const query = 'SELECT * FROM Sponsor WHERE email = ? AND password = ?';
 
@@ -68,7 +70,7 @@ app.post('/loginSponsor', (req, res) => {
 });
 
 // SEARCH (SPONSOR)
-app.get('/searchSponsor', (req, res) => {
+router.get('/searchSponsor', (req, res) => {
     const { sponsor_name,  email, start_date, end_date } = req.query;
     const query = 'SELECT * FROM Sponsor WHERE sponsor_name LIKE ? OR email LIKE ? OR start_date LIKE ? OR end_date LIKE ?';
 
@@ -82,3 +84,5 @@ app.get('/searchSponsor', (req, res) => {
         res.json({message: 'Successful', sponsor: results});
     });
 });
+
+module.exports = router;
