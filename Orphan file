@@ -1,7 +1,9 @@
-// -----------------------------------------------------"ORPHAN" SECTION------------------------------------------------------ //
+const express = require('express');
+const router = express.Router();
+const db = require('../db/db')
 
 // POST (ORPHAN)
-app.post('/addOrphan', (req, res) => {
+router.post('/addOrphan', (req, res) => {
     const { orphan_name, gender, email, password, edu_level, age, DOB, DOA } = req.body;
     const sql = "INSERT INTO Orphan ( orphan_name, gender, email, password, edu_level, age, DOB, DOA ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     db.query(sql, [ orphan_name, gender, email, password, edu_level, age, DOB, DOA ], (err, result) => {
@@ -15,7 +17,7 @@ app.post('/addOrphan', (req, res) => {
 });
 
 // GET (ORPHAN)
-app.get ('/getOrphan', (req, res) => {
+router.get ('/getOrphan', (req, res) => {
     console.log('req.body:', req.body);
     db.query('SELECT * FROM Orphan',(err, results) => {
         if(err) {
@@ -28,17 +30,17 @@ app.get ('/getOrphan', (req, res) => {
 });
 
 // UPDATE (ORPHAN)
-app.put('/updateOrphan', (req,res) => {
-    const { orphan_id, orphan_name, email, password } = req.body;
-    const query = `UPDATE Orphan SET orphan_name = '${orphan_name}', email = '${email}', password = '${password}', WHERE orphan_id = ${orphan_id}`;
+router.put('/updateOrphan', (req,res) => {
+    const { orphan_id, orphan_name, email } = req.body;
+    const query = `UPDATE Orphan SET orphan_name = '${orphan_name}', email = '${email}' WHERE orphan_id = ${orphan_id}`;
     db.query(query, (err, result) => {
         if(err) throw err;
-        res.send('Orphan has been updated successfully');
+        res.send('Orphan updated successfully');
     });
 });
 
 // DELETE (ORPHAN)
-app.delete('/deleteOrphan', (req,res) => {
+router.delete('/deleteOrphan', (req,res) => {
     const { orphan_id} = req.query;
     const query = `DELETE FROM Orphan WHERE orphan_id = ${orphan_id}`;
     db.query(query, (err, result) => {
@@ -48,7 +50,7 @@ app.delete('/deleteOrphan', (req,res) => {
 });
 
 // LOGIN (ORPHAN)
-app.post('/loginOrphan', (req, res) => {
+router.post('/loginOrphan', (req, res) => {
     const { email, password } = req.body;
     const query = 'SELECT * FROM Orphan WHERE email = ? AND password = ?';
 
@@ -68,7 +70,7 @@ app.post('/loginOrphan', (req, res) => {
 });
 
 // SEARCH (ORPHAN)
-app.get('/searchOrphan', (req, res) => {
+router.get('/searchOrphan', (req, res) => {
     const { orphan_name, gender, email, edu_level, age } = req.query;
     const query = 'SELECT * FROM Orphan WHERE orphan_name LIKE ? OR gender LIKE ? OR email LIKE ? OR edu_level LIKE ? OR age LIKE ? ';
 
@@ -82,3 +84,5 @@ app.get('/searchOrphan', (req, res) => {
         res.json({message: 'Successful', Orphan: results});
     });
 });
+
+module.exports = router;
