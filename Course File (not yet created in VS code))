@@ -1,10 +1,12 @@
-// ------------------------------------------------------------------"COURSE" SECTION---------------------------------------------------------------------------------
+const express = require('express');
+const router = express.Router();
+const db = require('../db/db');
 
-//POST (COURSE)
-app.post('/addCourse', (req, res) => {
+// POST (COURSE)
+router.post('/addCourse', (req, res) => {
     const { course_name, duration, department, orphan_id_fk } = req.body;
-    const sql = "INSERT INTO Course ( course_name, duration, department, orphan_id_fk ) VALUES ( ?, ?, ?, ? )";
-    db.query(sql, [ course_name, duration, department, orphan_id_fk ], (err, result) => {
+    const sql = "INSERT INTO Course (course_name, duration, department, orphan_id_fk) VALUES (?, ?, ?, ?)";
+    db.query(sql, [course_name, duration, department, orphan_id_fk], (err, result) => {
         if (err) {
             console.error('Error adding course:', err);
             res.status(500).send('Error adding course');
@@ -14,31 +16,31 @@ app.post('/addCourse', (req, res) => {
     });
 });
 
-//GET (COURSE)
-app.get ('/getCourse', (req, res) => {
+// GET (COURSE)
+router.get ('/getCourse', (req, res) => {
     console.log('req.body:', req.body);
     db.query('SELECT * FROM Course',(err, results) => {
         if(err) {
-            console.error('Error fetching course:', err);
-            res.status(500).send('Error fetching course');
+            console.error('Error fetching Course:', err);
+            res.status(500).send('Error fetching Course');
             return;
         }
         res.json(results);
     });
 });
 
-//UPDATE (COURSE)
-app.put('/updateCourse', (req,res) => {
-    const { course_code, course_name, duration, department } = req.body;
-    const query = `UPDATE Course SET course_name = '${course_name}', duration = '${duration'} , department = '${department}', WHERE course_code = ${course_code}`;
+// UPDATE (COURSE)
+router.put('/updateCourse', (req,res) => {
+    const { course_code, course_name, duration, department, orphan_id_fk } = req.body;
+    const query = `UPDATE Course SET course_name = '${course_name}', duration = '${duration}', department ='${department}', orphan_id_fk ='${orphan_id_fk}' WHERE course_code = ${course_code}`;
     db.query(query, (err, result) => {
         if(err) throw err;
         res.send('Course updated successfully');
     });
 });
 
-//DELETE (COURSE)
-app.delete('/deleteCourse', (req,res) => {
+// DELETE (COURSE)
+router.delete('/deleteCourse', (req,res) => {
     const { course_code } = req.query;
     const query = `DELETE FROM Course WHERE course_code = ${course_code}`;
     db.query(query, (err, result) => {
@@ -47,12 +49,12 @@ app.delete('/deleteCourse', (req,res) => {
     });
 });
 
-//SEARCH (COURSE)
-app.get('/searchCourse', (req, res) => {
-    const { course_name, duration, department } = req.query;
-    const query = 'SELECT * FROM Course WHERE course_name LIKE ? OR duration LIKE ? OR department LIKE ?';
+// SEARCH (COURSE)
+router.get('/searchCourse', (req, res) => {
+    const {course_code, course_name, duration, department} = req.query;
+    const query = 'SELECT * FROM Course WHERE course_code LIKE ? OR course_name LIKE ? OR duration LIKE ? OR department LIKE ?';
 
-    db.query(query, [`%${course_name}%`, `%${duration}%`, `%${department}%` ], (err, results) => {
+    db.query(query, [`%${course_code}%`,`%${course_name}%`, `%${duration}%`, `%${department}%`], (err, results) => {
         if(err) {
             console.error('Error during search:', err);
             res.status(500).send('Error during search');
@@ -62,3 +64,5 @@ app.get('/searchCourse', (req, res) => {
         res.json({message: 'Successful', Course: results});
     });
 });
+
+module.exports = router;
