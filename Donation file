@@ -1,7 +1,9 @@
-// -----------------------------------------------------"DONATION"SECTION------------------------------------------------------ //
+const express = require('express');
+const router = express.Router();
+const db = require('../db/db')
 
 // POST (DONATION)
-app.post('/addDonation', (req, res) => {
+router.post('/addDonation', (req, res) => {
     const { donation_status, donation_note, type , amount, unit, date, staff_id_fk, sponsor_id_fk } = req.body;
     const sql = "INSERT INTO Donation (donation_status, donation_note, type , amount, unit, date, staff_id_fk, sponsor_id_fk) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     db.query(sql, [donation_status, donation_note, type , amount, unit, date, staff_id_fk, sponsor_id_fk], (err, result) => {
@@ -15,7 +17,7 @@ app.post('/addDonation', (req, res) => {
 });
 
 // GET (DONATION)
-app.get ('/getDonation', (req, res) => {
+router.get ('/getDonation', (req, res) => {
     console.log('req.body:', req.body);
     db.query('SELECT * FROM Donation',(err, results) => {
         if(err) {
@@ -28,7 +30,7 @@ app.get ('/getDonation', (req, res) => {
 });
 
 // UPDATE (DONATION)
-app.put('/updateDonation', (req,res) => {
+router.put('/updateDonation', (req,res) => {
     const { donation_code, donation_status, type, amount, unit } = req.body;
     const query = `UPDATE Donation SET donation_status = '${donation_status}', type = '${type}', amount = '${amount}',  unit = '${unit}' WHERE donation_code = ${donation_code}`;
     db.query(query, (err, result) => {
@@ -38,7 +40,7 @@ app.put('/updateDonation', (req,res) => {
 });
 
 // DELETE (DONATION)
-app.delete('/deleteDonation', (req,res) => {
+router.delete('/deleteDonation', (req,res) => {
     const { donation_code } = req.query;
     const query = `DELETE FROM Donation WHERE donation_code = ${donation_code}`;
     db.query(query, (err, result) => {
@@ -48,7 +50,7 @@ app.delete('/deleteDonation', (req,res) => {
 });
 
 // SEARCH (DONATION)
-app.get('/searchDonation', (req, res) => {
+router.get('/searchDonation', (req, res) => {
     const { donation_status,  type, unit, amount, date } = req.query;
     const query = 'SELECT * FROM Donation WHERE donation_status LIKE ? OR type LIKE ? OR unit LIKE ? OR amount LIKE ? OR date LIKE ? ';
 
@@ -62,3 +64,5 @@ app.get('/searchDonation', (req, res) => {
         res.json({message: 'Successful', Donation: results});
     });
 });
+
+module.exports = router;
