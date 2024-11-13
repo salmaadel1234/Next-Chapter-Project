@@ -1,0 +1,68 @@
+const express = require('express');
+const router = express.Router();
+const db = require('../db/db')
+
+// Post(Feedback)
+router.post('/addfeedback', (req, res) => {
+    const { feedback_status, feedback_date, description, staff_id_fk, orphan_id_fk } = req.body;
+    const sql = "INSERT INTO feedback (feedback_status, feedback_date, description, staff_id_fk, orphan_id_fk ) VALUES (?, ?, ?, ?, ?)";
+    db.query(sql, [ feedback_status, feedback_date, description, staff_id_fk, orphan_id_fk  ], (err, result) => {
+        if (err) {
+            console.error('Error adding feedback:', err);
+            res.status(500).send('Error adding feedback');
+            return;
+        }
+        res.send('Feedback has been added successfully!');
+    });
+});
+
+//GET(Feedback)
+router.get ('/getfeedback', (req, res) => {
+    console.log('req.body:', req.body);
+    db.query('SELECT * FROM feedback',(err, results) => {
+        if(err) {
+            console.error('Error fetching feedback:', err);
+            res.status(500).send('Error fetching feedback');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+//Update(Feedback)
+router.put('/updatefeedback', (req,res) => {
+    const { feedback_no,feedback_status, feedback_date } = req.body;
+    const query = `UPDATE feedback SET feedback_status = '${feedback_status}', feedback_date = '${feedback_date}' WHERE feedback_no = ${feedback_no}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Feedback updated successfully');
+    });
+});
+
+//Delete(Feedback)
+router.delete('/deletefeedback', (req,res) => {
+    const { feedback_no } = req.query;
+    const query = `DELETE FROM feedback WHERE feedback_no = ${feedback_no}`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Feedback deleted successfully');
+    });
+});
+
+//Search(Feedback)
+router.get('/searchfeedback', (req, res) => {
+    const {feedback_no, feedback_status, feedback_date } = req.query;
+    const query = 'SELECT * FROM feedback WHERE feedback_no LIKE ? OR feedback_status LIKE ? OR  feedback_date LIKE ? ';
+
+    db.query(query, [`%${feedback_no}%`,`%${feedback_status}%`, `%${feedback_date}%`], (err, results) => {
+        if(err) {
+            console.error('Error during feedback', err);
+            res.status(500).send('Error during feedback');
+            return;
+        }
+
+        res.json({message: 'Successful', feedback: results});
+    });
+});
+
+module.exports = router;
