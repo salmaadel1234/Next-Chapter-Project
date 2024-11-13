@@ -1,15 +1,79 @@
-//----------------------------------------------------------"LOGIN"-SECTION----------------------------------------------------------------//
+const express = require('express');
+const router = express.Router();
+const db = require('../db/db');
 
-// POST (LOGIN)
-app.post('/addLogin', (req, res) => {
+//POST(lOGIN)
+router.post('/addLogin', (req, res) => {
     const { email, password, staff_id_fk, orphan_id_fk, sponsor_id_fk } = req.body;
-    const sql = "INSERT INTO Login ( email, password, staff_id_fk, orphan_id_fk, sponsor_id_fk ) VALUES (?, ?, ?, ?, ?)";
+    const sql = "INSERT INTO Login (email, password, staff_id_fk, orphan_id_fk, sponsor_id_fk ) VALUES (?, ?, ?, ?, ?)";
     db.query(sql, [ email, password, staff_id_fk, orphan_id_fk, sponsor_id_fk ], (err, result) => {
         if (err) {
-            console.error('Error validating login:', err);
-            res.status(500).send('Error validating login');
+            console.error('Error creating Login', err);
+            res.status(500).send('Error creating Login');
             return;
         }
-        res.send('Login successful!');
+        res.send('Sucesssful login!');
     });
 });
+
+// GET (LOGIN)
+router.get ('/getLogin', (req, res) => {
+    console.log('req.body:', req.body);
+    db.query('SELECT * FROM Login',(err, results) => {
+        if(err) {
+            console.error('Error fetching Login', err);
+            res.status(500).send('Error fetching Login');
+            return;
+        }
+        res.json(results);
+    });
+});
+
+// UPDATE (LOGIN)
+router.put('/updateLogin', (req,res) => {
+    const { email, password, staff_id_fk, orphan_id_fk, sponsor_id_fk } = req.body;
+    const query = `UPDATE Login SET email = '${email}', password = '${password}' WHERE staff_id_fk = '${staff_id_fk}' OR orphan_id_fk = '${orphan_id_fk}' OR  sponsor_id_fk ='${sponsor_id_fk}'`;
+    db.query(query, (err, result) => {
+        if(err) throw err;
+        res.send('Login updated successfully');
+    });
+});
+
+// DELETE (LOGIN)
+router.delete('/deleteLogin', (req, res) => {
+    const { email } = req.query;
+
+    const selectquery = `SELECT email FROM Login WHERE email = ?`;
+
+    db.query(selectquery, [email], (err, result) => {
+        if (err) throw err;
+
+        if (result.length > 0) {
+            const query = `DELETE FROM Login WHERE email = ?`;
+            db.query(query, [email], (err, result) => {
+                if (err) throw err;
+                res.status(200).send('Login deleted successfully');
+            });
+        } else {
+            res.status(404).send(`${email} is not found`);
+        }
+    });
+});
+
+// SEARCH (LOGIN)
+router.get('/searchLogin', (req, res) => {
+    const {email, password} = req.query;
+    const query = 'SELECT * FROM Login WHERE email LIKE ? OR password LIKE ?';
+
+    db.query(query, [`%${email}%`,`%${password}%`], (err, results) => {
+        if(err) {
+            console.error('Error during Login', err);
+            res.status(500).send('Error during Login');
+            return;
+        }
+
+        res.json({message: 'Successful', Login: results});
+    });
+});
+
+module.exports = router;
