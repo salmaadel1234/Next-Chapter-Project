@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign-Up Form</title>
+  <link rel="stylesheet" href="Signup.css">
+</head>
+<body>
+  <div class="signup-container">
+    <div class="signup-box">
+      <h2>Staff Sign-Up</h2>
+      <form action="/signup" method="POST">
+        
+        <label for="fname">Full Name</label>
+        <input type="text" id="fname" name="fname" required>
+        
+        <label for="gender">Gender</label>
+        <input type="radio" name="gender" value="female" required> Female
+        <input type="radio" name="gender" value="male" required> Male
+        
+        <label for="role">Role</label>
+        <select id="role" name="role" required>
+          <option value="" disabled selected>Select your role</option>
+          <option value="admin">Admin</option>
+          <option value="teacher">Teacher</option>
+          <option value="doctor">Doctor</option>
+          <option value="therapist">Therapist</option>
+        </select>
+        
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="register-password">Password</label>
+        <input type="password" id="register-password" name="register-password" required>
+        
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+        
+        <div class="actions">
+          <button type="submit" class="signup-button">Sign-Up</button>
+          <a href="#" class="sign-up"> Already have an account? Login </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
