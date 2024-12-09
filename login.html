@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Login</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="login-box">
+      <h2> Login </h2>
+      <form action="/login" method="POST">
+        
+        <div class="input-group">
+          <input type="email" id="email" name="email" placeholder="Email" required> <br> <br>
+          <input type="password" id="password" name="password" placeholder="Password" required>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="login-button"> Login </button>
+          <a href="#" class="sign-up"> Don't have an account? <u> <b> Sign-Up </b></u> </a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>
