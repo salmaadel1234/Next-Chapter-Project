@@ -1,0 +1,133 @@
+import React from "react";
+import "./hero.css"; // Importing the CSS file
+
+const Header = () => (
+  <header>
+    <div className="logo">
+      <a href="hero-page.html">
+        <img src="logo(white).png" alt="Logo" width="300px" height="150px" />
+      </a>
+    </div>
+    <div className="header-buttons">
+      <a href="login.html" className="btn login-btn">Login</a>
+      <a href="signup.html" className="btn signup-btn">Sign-Up</a>
+    </div>
+  </header>
+);
+
+const NavBar = () => (
+  <div className="nav">
+    <div className="nav-links">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Our Goals</a></li>
+        <li><a href="#">About-Us</a></li>
+        <li><a href="#">Contact-Us</a></li>
+      </ul>
+    </div>
+  </div>
+);
+
+const HeroSection = () => (
+  <div className="hero" id="hero-main">
+    <h1>Empowering young minds one step at a time</h1>
+    <p>Providing quality education for orphans through our<br />innovative LMS</p>
+    <a href="login.html" className="btn"><b>Get started</b></a>
+  </div>
+);
+
+const Goals = () => (
+  <section className="what-we-do" id="what-we-do">
+    <div className="line"></div>
+    <h2>What We Do:</h2>
+    <div className="row">
+      <div className="card">
+        <img src="support.png" alt="Support" width="80px" height="80px" />
+        <p>Provide love & support to our<br />dear orphans</p>
+      </div>
+      <div className="card">
+        <img src="hand-shake.png" alt="Trust" width="100px" height="100px" />
+        <p>Engrave trust & long-lasting<br />friendships</p>
+      </div>
+      <div className="card">
+        <img src="education.png" alt="Education" width="100px" height="100px" />
+        <p>Provide high-quality education<br />& knowledge</p>
+      </div>
+    </div>
+  </section>
+);
+
+const AboutUs = () => (
+  <section className="About-us" id="About-us">
+    <div className="about-container">
+      <div className="left-side">
+        <img src="about-us.png" alt="About Us" width="380px" height="500px" />
+      </div>
+      <div className="right-side">
+        <h2>Who Are We?</h2>
+        <p>
+          We are a dedicated team committed to empowering<br />
+          the lives of orphaned children through education. Our<br />
+          innovative Learning Management System (LMS)<br />
+          provides access to quality educational resources,<br />
+          interactive learning experiences, and supportive<br />
+          community.
+        </p>
+      </div>
+    </div>
+  </section>
+);
+
+const Footer = () => (
+  <footer>
+    <div className="footer-container">
+      <div className="footer-left">
+        <div className="footer-logo">
+          <img src="logo(yellow).png" alt="Footer Logo" width="300px" height="150px" />
+        </div>
+        <div className="footer-links">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Our goals</a></li>
+            <li><a href="#">About-Us</a></li>
+            <li><a href="#">Contact-Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="footer-middle">
+        <div className="middle">
+          <h3>Want to get notified?</h3>
+          <p>Be the first one to know about our new<br />exciting developments</p>
+          <form action="">
+            <input type="text" name="newsletter" id="newsletter" placeholder="Enter your email address" />
+            <button className="newsletter-btn">Submit</button>
+          </form>
+        </div>
+      </div>
+      <div className="footer-right">
+        <div className="social-media">
+          <a href="https://www.instagram.com/"><i className="fab fa-instagram"></i></a>
+          <a href="https://www.facebook.com/"><i className="fab fa-facebook"></i></a>
+          <a href="https://www.pinterest.com/"><i className="fab fa-pinterest"></i></a>
+          <a href="https://web.whatsapp.com/"><i className="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+    <div className="footerbottom">
+      <p>Copyright &copy;2024; <span className="designer">Designed by Next Chapter</span></p>
+    </div>
+  </footer>
+);
+
+const App = () => (
+  <div>
+    <Header />
+    <NavBar />
+    <HeroSection />
+    <Goals />
+    <AboutUs />
+    <Footer />
+  </div>
+);
+
+export default App;
