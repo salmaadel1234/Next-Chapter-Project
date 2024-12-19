@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Feedback </title>
+  <link rel="stylesheet" href="Feedback.css">
+  <link rel="icon" type="image/png" href="logo(cropped).png">
+</head>
+<body>
+
+  <div class="feedback-container">
+    <div class="logo">
+      <a href="hero.html"> <img src="logo(cropped).png" width="70px" height="70px"> </a>
+    </div>
+
+    <h2> Feedback </h2>
+
+    <form class="feed-form">
+      <div class="feedback-input">
+        <select class="feedback_status" required>
+          <option value="" disabled selected> Status </option>
+          <option value="1"> Read </option>
+          <option value="2"> Pending </option>
+          <option value="3"> Rejected </option>
+        </select>
+
+        <input type="date" placeholder="Date" required>
+      </div>
+
+      <div class="feedback-input">
+        <textarea placeholder="Please enter your feedback here"> </textarea>
+      </div>
+
+      <button type="submit" class="submit-btn"> Submit </button>
+
+    </form>
+  </div>
+</body>
+</html>
