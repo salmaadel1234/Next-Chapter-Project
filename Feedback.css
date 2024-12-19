@@ -1,0 +1,102 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-color: #FFEA96;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .feedback-container {
+    background-color: #fff;
+    width: 37%;
+    padding: 25px 40px;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px #0000001a;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .feedback-container .logo {
+    margin: auto;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 25px;
+  }
+  
+  .feedback-container h2 {
+    margin-bottom: 40px;
+    color: black;
+    font-size: 24px;
+  }
+
+.feed-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.feedback-input {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.feedback-input select,
+.feedback-input input[type="date"],
+.feedback-input textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.feedback-input textarea {
+    height: 180px;
+    resize: none;
+}
+
+/* Button Styling */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #FFA065;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+    margin-bottom: 25px;
+  }
+  
+  .submit-btn:hover {
+    background-color: #FFEA96;
+    color: #000;
+  }
+
+/* General Responsiveness */
+@media (max-width: 768px) {
+    .feedback-container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .feedback-container h2 {
+        font-size: 20px;
+    }
+
+    .submit-btn {
+        font-size: 14px;
+    }
+}
