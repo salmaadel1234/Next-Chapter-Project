@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign-Up (Orphan)</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="icon" type="image/png" href="logo(cropped).png">
+</head>
+<body>
+
+  <div class="form-container">
+
+    <div class="login-logo">
+        <a href="hero.html"> <img src="logo(cropped).png" width="70px" height="70px"> </a>
+      </div>
+
+      <h2> Orphan Signup </h2>
+      <form action="/" method="POST"> </form>
+
+    <div class="toggle-buttons">
+      <button onclick="window.location.href='signup(staff).html'" class="s">Staff</button>
+      <button class="active o">Orphan</button>
+    </div>
+
+    <form class="form">
+      <div class="input-group">
+        <input type="text" placeholder="Full Name" required>
+        <input type="email" placeholder="Email" required>
+      </div>
+
+      <div class="input-group">
+        <input type="password" placeholder="Password" required>
+        <input type="password" placeholder="Confirm Password" required>
+      </div>
+
+      <div class="input-group">
+        <input type="date" placeholder="DOB" required>
+        <input type="date" placeholder="DOA" required>
+      </div>
+
+      <div class="input-group">
+        <div class="gender-group">
+          <p> <b> Select your Gender: </b></p>
+          <label><input type="radio" name="gender" value="Male"> Male</label>
+          <label><input type="radio" name="gender" value="Female"> Female</label>
+        </div>
+        
+        <select class="edu" required>
+          <option value="" disabled selected> Educational Level </option>
+          <option value="1"> Year 1 </option>
+          <option value="2"> Year 2 </option>
+          <option value="3"> Year 3 </option>
+          <option value="4"> Year 4 </option>
+          <option value="5"> Year 5 </option>
+          <option value="6"> Year 6 </option>
+          <option value="7"> Year 7 </option>
+          <option value="8"> Year 8 </option>
+          <option value="9"> Year 9 </option>
+          <option value="10"> Year 10 </option>
+          <option value="11"> year 11 </option>
+          <option value="12"> Year 12 </option>
+        </select>
+      </div>
+
+      <button type="submit" class="signup-btn">Sign-Up</button>
+      <p class="login-text">Already have an account? <a href="#">Login</a></p>
+
+    </form>
+  </div>
+
+</body>
+</html>
