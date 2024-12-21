@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign-Up (Staff)</title>
+  <link rel="stylesheet" href="common.css">
+  <link rel="icon" type="image/png" href="logo(cropped).png">
+</head>
+<body>
+
+  <div class="form-container">
+
+    <div class="logo">
+      <a href="hero.html"> <img src="logo(cropped).png" width="70px" height="70px"> </a>
+    </div>
+
+    <h2> Staff Signup </h2>
+      <form action="/" method="POST"> </form>
+
+    <div class="toggle-buttons">
+      <button class="active s">Staff</button>
+      <button onclick="window.location.href='signup(orphan).html'" class="o">Orphan</button>
+    </div>
+
+    <form class="form">
+      <div class="input-group">
+        <input type="text" placeholder="Full Name" required>
+        <input type="email" placeholder="Email" required>
+      </div>
+
+      <div class="input-group">
+        <input type="password" placeholder="Password" required>
+        <input type="password" placeholder="Confirm Password" required>
+      </div>
+
+      <div class="input-group">
+        <div class="gender-box">
+          <p><b> Select your Gender: </b></p>
+          <label><input type="radio" name="gender" value="Male"> Male</label>
+          <label><input type="radio" name="gender" value="Female"> Female</label>
+        </div>
+
+        <select class="role" required>
+          <option value="" disabled selected> Role </option>
+          <option value="teacher"> Teacher </option>
+          <option value="doctor"> Doctor </option>
+          <option value="therapist"> Therapist </option>
+        </select>
+      </div>
+
+      <button type="submit" class="signup-btn">Sign-Up</button>
+      <p class="login-text">Already have an account? <a href="#">Login</a></p>
+
+    </form>
+  </div>
+</body>
+</html>
