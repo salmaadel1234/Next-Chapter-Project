@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Donation </title>
+  <link rel="stylesheet" href="donation-form.css">
+  <link rel="icon" type="image/png" href="logo(cropped).png">
+</head>
+<body>
+
+  <div class="donation-container">
+
+    <div class="login-logo">
+        <a href="hero.html"> <img src="logo(cropped).png" width="70px" height="70px"> </a>
+      </div>
+
+      <h2> Donation Form </h2>
+      <form action="/" method="POST"> </form>
+
+    <form class="donation-form">
+      
+      <div class="donation-input-group">
+        <select class="donation-type" required>
+          <option value="" disabled selected> Select donation type </option>
+          <option value="1"> Clothing </option>
+          <option value="2"> Money </option>
+          <option value="3"> Food </option>
+          <option value="3"> Medicine </option>
+        </select>
+        <input type="date" placeholder="Date" required>
+      </div>
+
+      <div class="donation-input-group">        
+        <input type="text" placeholder="Amount ($)" required>
+        <input type="text" placeholder="Quantity" required>
+      </div>
+
+      <div class="donation-input-group">
+        <textarea placeholder="Write any additional notes here.."> </textarea>
+      </div>
+
+      <button type="submit" class="done-btn"> Done </button>
+
+    </form>
+  </div>
+
+</body>
+</html>
