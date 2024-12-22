@@ -1,3 +1,13 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import "./App.css"; 
+import logoWhite from './assets/images/logo(white).png';
+import supportImage from './assets/images/support.png';
+import handShakeImage from './assets/images/hand-shake.png';
+import educationImage from './assets/images/education.png';
+import aboutImage from './assets/images/about-us.png';
+import logoYellow from './assets/images/logo(yellow).png';
+
 const Header = () => (
   <header>
     <div className="logo">
@@ -6,8 +16,8 @@ const Header = () => (
       </Link>
     </div>
     <div className="header-buttons">
-      <Link to="/login" className="btn login-btn">Login</Link>
-      <Link to="/Signup(orphan)" className="btn signup-btn">Sign-Up</Link>
+      <Link to="/Login.js" className="btn login-btn">Login</Link>
+      <Link to="/signup" className="btn signup-btn">Sign-Up</Link>
     </div>
   </header>
 );
@@ -52,6 +62,7 @@ const Goals = () => (
     </div>
   </section>
 );
+
 
 function Home() {
   return (
@@ -125,3 +136,17 @@ const Footer = () => (
     </div>
   </footer>
 );
+
+const App = () => (
+  <Router>
+      <Header />
+      <NavBar />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<AboutUs />} />
+    </Routes>
+    <Footer />
+  </Router>
+);
+
+export default App;
