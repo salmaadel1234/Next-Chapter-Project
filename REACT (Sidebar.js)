@@ -1,0 +1,51 @@
+import React from "react";
+import {Link} from "react-router-dom";
+/*import logoYellow from '..assets/images/logo(yellow).png';*/
+
+const Sidebar = () => {
+    return (
+        <div className="sidebar">
+            <header>
+                <div className="logo">
+                    <img src="logo(yellow).png" alt="Logo" width="150px" height="150px" />
+                </div>
+                <div className="search-bar">
+                    <input
+                        type="text"
+                        id="searchFeedback"
+                        placeholder="Search feedback..."
+                        onKeyUp={(e) => filterFeedback(e.target.value)}
+                    />
+                </div>
+            </header>
+
+            <div className="section">
+                <h3>Staff</h3>
+                <div className="button-group">
+                    <button>Create</button>
+                    <button>Read</button>
+                </div>
+            </div>
+
+            <div className="section">
+                <h3>Feedback</h3>
+                <div className="button-group">
+                    <button>Create</button>
+                    <Link to="/feedback">
+                        <button>Read</button>
+                    </Link>
+                </div>
+            </div>
+
+            <div className="section">
+                <h3>Donations</h3>
+                <div className="button-group">
+                    <button>Create</button>
+                    <button>Read</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Sidebar;
