@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orphan Profile Dashboard</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Signika";
+        }
+
+        body {
+            display: flex;
+            background-color: #f8f8f8;
+            height: 200vh;
+        }
+
+        .logo img {
+        max-width: 100%;
+        height: auto;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background-color: #FFEA96;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            color: #333;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #444;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .button-group button {
+            background-color: #FFA065;
+            color: black;
+            border: none;
+            padding: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .button-group button:hover {
+            background-color: #FFEA96;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-bar input {
+            width: 200px;
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            padding: 40px;
+            background-color: white;
+            text-align: center;
+            display: none; /* Initially hidden */
+        }
+
+        .content.active {
+            display: block; /* Toggle visibility */
+        }
+
+        .content h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Table Design */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fdfdfd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #FFA065;
+        }
+
+        th {
+            background-color: #FFEA96;
+            color: #333;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #e2ebfc;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            color: red;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .delete-btn:hover {
+            color: darkred;
+        }
+
+        .editable {
+            border: 1px solid #FFA065;
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        /* Popup Styles */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .popup.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .popup-content p {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .popup-content button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .popup-content .yes-btn {
+            background-color: red;
+            color: white;
+        }
+
+        .popup-content .no-btn {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .popup-content .yes-btn:hover {
+            background-color: darkred;
+        }
+
+        .popup-content .no-btn:hover {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!--LOGO + LOGIN + SIGN-UP-->
+    <div id="top">
+        <header>
+            <div class="logo">
+                <img src="logo(yellow).png" width="150px" height="150px">
+            </div>
+        </header>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search Donations">
+    </div>
+
+        <div class="section">
+            <h3>Staff</h3>
+            <div class="button-group">
+                <button>Create</button>
+                <button>Read</button>
+            </div>
+        </div>
+        <div class="section">
+            <h3>Feedback</h3>
+            <div class="button-group">
+                <button>Create</button>
+                <button>Read</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>Donations</h3>
+            <div class="button-group">
+                <button>Create</button>
+                <button id="readDonationsBtn">Read</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content" id="orphanProfile">
+        <h1>Donations</h1>
+
+        <!-- Table for Courses -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Donations-code</th>
+                    <th>Donation_status</th>
+                    <th>Notes</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Unit</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table content as in your original code -->
+                <tr>
+                    <td ondblclick="makeEditable(this)">1</td>
+                    <td ondblclick="makeEditable(this)">successful</td>
+                    <td ondblclick="makeEditable(this)">clothes that will keep childern warm at winter</td>
+                    <td ondblclick="makeEditable(this)">clothing</td>
+                    <td ondblclick="makeEditable(this)">none</td>
+                    <td ondblclick="makeEditable(this)">5,000</td>
+                    <td ondblclick="makeEditable(this)">12-12-2023</td>
+                    <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                    
+                </tr>
+                <tr>
+                    <td ondblclick="makeEditable(this)">6</td>
+                    <td ondblclick="makeEditable(this)">pending</td>
+                    <td ondblclick="makeEditable(this)">multivitamins</td>
+                    <td ondblclick="makeEditable(this)">medicine</td>
+                    <td ondblclick="makeEditable(this)">none</td>
+                    <td ondblclick="makeEditable(this)">10,000</td>
+                    <td ondblclick="makeEditable(this)">11-11-2025</td>
+                    <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                    
+                </tr>
+                <tr>
+                    <td ondblclick="makeEditable(this)">8</td>
+                    <td ondblclick="makeEditable(this)">cancelled</td>
+                    <td ondblclick="makeEditable(this)">food and meals for kids</td>
+                    <td ondblclick="makeEditable(this)">food</td>
+                    <td ondblclick="makeEditable(this)">none</td>
+                    <td ondblclick="makeEditable(this)">100,000</td>
+                    <td ondblclick="makeEditable(this)">20-9-2025</td>
+                    <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                   
+                </tr>
+                
+                <tr>
+                    <td ondblclick="makeEditable(this)">9</td>
+                    <td ondblclick="makeEditable(this)">successful</td>
+                    <td ondblclick="makeEditable(this)">food and meals for kids/td>
+                    <td ondblclick="makeEditable(this)">food</td>
+                    <td ondblclick="makeEditable(this)">none</td>
+                    <td ondblclick="makeEditable(this)">50,000</td>
+                    <td ondblclick="makeEditable(this)">11-9-2025</td>
+                 <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                    
+                </tr>
+                <tr>
+                    <td ondblclick="makeEditable(this)">10</td>
+                    <td ondblclick="makeEditable(this)">cancelled</td>
+                    <td ondblclick="makeEditable(this)">blankets for winter</td>
+                    <td ondblclick="makeEditable(this)">clothes</td>
+                    <td ondblclick="makeEditable(this)">none</td>
+                    <td ondblclick="makeEditable(this)">20,000</td>
+                    <td ondblclick="makeEditable(this)">6-5-2023</td>
+                    <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+     <!-- Popup -->
+     <div class="popup" id="deletePopup">
+        <div class="popup-content">
+            <p>Are you sure you want to delete this field?</p>
+            <button class="yes-btn" id="confirmYes">Yes</button>
+            <button class="no-btn" id="confirmNo">No</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to toggle the Orphan Profile section
+        document.getElementById("readDonationsBtn").addEventListener("click", function () {
+            const profileSection = document.getElementById("orphanProfile");
+            profileSection.classList.toggle("active");
+        });
+
+        // Make a table cell editable on double-click
+        function makeEditable(cell) {
+            const currentText = cell.textContent;
+            const input = document.createElement("input");
+            input.type = "text";
+            input.value = currentText;
+            input.className = "editable";
+
+            cell.textContent = ""; // Clear the cell
+            cell.appendChild(input);
+
+            // Focus on the input field
+            input.focus();
+
+            // Save changes on blur or Enter key
+            input.addEventListener("blur", function () {
+                cell.textContent = input.value;
+            });
+
+            input.addEventListener("keypress", function (e) {
+                if (e.key === "Enter") {
+                    cell.textContent = input.value;
+                }
+            });
+        }
+
+        // Delete the row containing the clicked button after confirmation
+        let rowToDelete = null;
+
+        function confirmDelete(button) {
+            rowToDelete = button.closest("tr");
+            document.getElementById("deletePopup").classList.add("active");
+        }
+
+        document.getElementById("confirmYes").addEventListener("click", function () {
+            if (rowToDelete) {
+                rowToDelete.remove();
+                rowToDelete = null;
+            }
+            document.getElementById("deletePopup").classList.remove("active");
+        });
+
+        document.getElementById("confirmNo").addEventListener("click", function () {
+            rowToDelete = null;
+            document.getElementById("deletePopup").classList.remove("active");
+        });
+
+        // Search functionality
+        document.getElementById("searchInput").addEventListener("input", function() {
+            const searchQuery = this.value.toLowerCase();
+            const rows = document.querySelectorAll("#orphanProfile tbody tr");
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td");
+                let isMatch = false;
+                cells.forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(searchQuery)) {
+                        isMatch = true;
+                    }
+                });
+                row.style.display = isMatch ? "" : "none";
+            });
+        });
+    </script>
+</body>
+</html>
