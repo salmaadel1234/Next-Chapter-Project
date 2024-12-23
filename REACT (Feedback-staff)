@@ -1,0 +1,125 @@
+import React from "react";
+import {Link} from "react-router-dom";
+const FeedbackTable = () => {
+    const [feedbackData, setFeedbackData] = useState([
+        { id: 2, status: "Successful", date: "2-2-2025", description: "it motivated me" },
+        { id: 14, status: "Pending", date: "23-1-2026", description: "Your education has given me a brighter future." },
+        { id: 16, status: "Rejected", date: "5-2-2028", description: "I would love to see more opportunities " },
+        { id: 5, status: "Pending", date: "22-8-2021", description: "Your teachers have inspired us to dream big" },
+        { id: 15, status: "Rejected", date: "5-2-2028", description: "I would love to see more opportunities" },
+        { id: 13, status: "Successful", date: "30-8-2027", description: "The vocational training programs have equipped me" },
+        { id: 4, status: "Pending", date: "12-6-2022", description: "Your educational system has provided us with multiple things" },
+    ]);
+
+    const [popupActive, setPopupActive] = useState(false);
+    const [rowToDelete, setRowToDelete] = useState(null);
+
+    const makeEditable = (id, key, value) => {
+        const newData = feedbackData.map((row) =>
+            row.id === id ? { ...row, [key]: value } : row
+        );
+        setFeedbackData(newData);
+    };
+
+    const confirmDelete = (id) => {
+        setPopupActive(true);
+        setRowToDelete(id);
+    };
+
+    const deleteRow = () => {
+        setFeedbackData(feedbackData.filter((row) => row.id !== rowToDelete));
+        setPopupActive(false);
+        setRowToDelete(null);
+    };
+
+    const filterFeedback = (search) => {
+        const rows = document.querySelectorAll("#feedbackTable tbody tr");
+        rows.forEach((row) => {
+            const feedbackText = row.textContent.toLowerCase();
+            if (feedbackText.includes(search.toLowerCase())) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    };
+
+    return (
+        <div className="content">
+            <h1>Feedback Dashboard</h1>
+            <table id="feedbackTable">
+                <thead>
+                    <tr>
+                        <th>Feedback_no</th>
+                        <th>Feedback_status</th>
+                        <th>Feedback_date</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {feedbackData.map((row) => (
+                        <tr key={row.id}>
+                            <td>
+                                <input
+                                    value={row.id}
+                                    onChange={(e) => makeEditable(row.id, "id", e.target.value)}
+                                    className="editable"
+                                />
+                            </td>
+                            <td>
+                                <input
+                                    value={row.status}
+                                    onChange={(e) => makeEditable(row.id, "status", e.target.value)}
+                                    className="editable"
+                                />
+                            </td>
+                            <td>
+                                <input
+                                    value={row.date}
+                                    onChange={(e) => makeEditable(row.id, "date", e.target.value)}
+                                    className="editable"
+                                />
+                            </td>
+                            <td>
+                                <input
+                                    value={row.description}
+                                    onChange={(e) => makeEditable(row.id, "description", e.target.value)}
+                                    className="editable"
+                                />
+                            </td>
+                            <td>
+                                <button
+                                    className="delete-btn"
+                                    onClick={() => confirmDelete(row.id)}
+                                >
+                                    X
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            {/* Popup */}
+            {popupActive && (
+                <div className="popup active">
+                    <div className="popup-content">
+                        <p>Are you sure you want to delete this field?</p>
+                        <button className="yes-btn" onClick={deleteRow}>
+                            Yes
+                        </button>
+                        <button
+                            className="no-btn"
+                            onClick={() => setPopupActive(false)}
+                        >
+                            No
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default FeedbackTable;
