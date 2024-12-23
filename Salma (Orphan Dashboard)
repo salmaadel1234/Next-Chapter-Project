@@ -1,0 +1,188 @@
+<body>
+  
+    <!-- Sidebar -->
+   <div class="sidebar">
+        <!--LOGO + LOGIN + SIGN-UP-->
+        <div id="top">
+            <header>
+                <div class="logo">
+                    <img src="logo(yellow).png" width="150px" height="150px">
+                </div>
+            </header>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search Courses">
+        </div>
+
+        <div class="section">
+            <h3>Courses</h3>
+            <div class="button-group">
+                <button id="readCoursesBtn">Read</button>
+                <button>Update</button>
+            </div>
+        </div>
+        <div class="section">
+            <h3>Feedback</h3>
+            <div class="button-group">
+                <button>Create</button>
+                <button>Read</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content" id="orphanProfile">
+        <h1>Orphan Profile</h1>
+
+        <!-- Table for Courses -->
+        <table id="courseTable">
+            <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Duration</th>
+                    <th>Department</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td ondblclick="makeEditable(this)">1</td>
+                    <td ondblclick="makeEditable(this)">Brand Marketing</td>
+                    <td ondblclick="makeEditable(this)">4 Months</td>
+                    <td ondblclick="makeEditable(this)">Marketing</td>
+                    <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                </tr>
+                <tr>
+                    <td ondblclick="makeEditable(this)">2</td>
+                    <td ondblclick="makeEditable(this)">Math</td>
+                    <td ondblclick="makeEditable(this)">4 Months</td>
+                    <td ondblclick="makeEditable(this)">Accounting</td>
+                    <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                </tr>
+                <tr>
+                    <td ondblclick="makeEditable(this)">3</td>
+                    <td ondblclick="makeEditable(this)">Graduation Project</td>
+                    <td ondblclick="makeEditable(this)">6 Months</td>
+                    <td ondblclick="makeEditable(this)">Business Information System</td>
+                    <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                </tr>
+
+                <tr>
+                    <td ondblclick="makeEditable(this)">4</td>
+                    <td ondblclick="makeEditable(this)">Arabic</td>
+                    <td ondblclick="makeEditable(this)">3 Months</td>
+                    <td ondblclick="makeEditable(this)"> Languages</td>
+                    <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                </tr>
+                <tr>
+                    <td ondblclick="makeEditable(this)">5</td>
+                    <td ondblclick="makeEditable(this)"> French</td>
+                    <td ondblclick="makeEditable(this)">2 Months</td>
+                    <td ondblclick="makeEditable(this)">Languages</td>
+                    <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                </tr>
+
+                <tr>
+                    <td ondblclick="makeEditable(this)">6</td>
+                    <td ondblclick="makeEditable(this)">Chemistry</td>
+                    <td ondblclick="makeEditable(this)">7 Months</td>
+                    <td ondblclick="makeEditable(this)">Science</td>
+                    <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                </tr>
+
+                <tr>
+                    <td ondblclick="makeEditable(this)">7</td>
+                    <td ondblclick="makeEditable(this)">Algebra</td>
+                    <td ondblclick="makeEditable(this)">3 Months</td>
+                    <td ondblclick="makeEditable(this)">Mathematics</td>
+                    <td><button class="delete-btn" onclick="confirmDelete(this)">X</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Popup -->
+    <div class="popup" id="deletePopup">
+        <div class="popup-content">
+            <p>Are you sure you want to delete this field?</p>
+            <button class="yes-btn" id="confirmYes">Yes</button>
+            <button class="no-btn" id="confirmNo">No</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to toggle the Orphan Profile section
+        document.getElementById("readCoursesBtn").addEventListener("click", function () {
+            const profileSection = document.getElementById("orphanProfile");
+            profileSection.classList.toggle("active");
+        });
+
+        // Make a table cell editable on double-click
+        function makeEditable(cell) {
+            const currentText = cell.textContent;
+            const input = document.createElement("input");
+            input.type = "text";
+            input.value = currentText;
+            input.className = "editable";
+
+            cell.textContent = ""; // Clear the cell
+            cell.appendChild(input);
+
+            // Focus on the input field
+            input.focus();
+
+            // Save changes on blur or Enter key
+            input.addEventListener("blur", function () {
+                cell.textContent = input.value;
+            });
+
+            input.addEventListener("keypress", function (e) {
+                if (e.key === "Enter") {
+                    cell.textContent = input.value;
+                }
+            });
+        }
+
+        // Delete the row containing the clicked button after confirmation
+        let rowToDelete = null;
+
+        function confirmDelete(button) {
+            rowToDelete = button.closest("tr");
+            document.getElementById("deletePopup").classList.add("active");
+        }
+
+        document.getElementById("confirmYes").addEventListener("click", function () {
+            if (rowToDelete) {
+                rowToDelete.remove();
+                rowToDelete = null;
+            }
+            document.getElementById("deletePopup").classList.remove("active");
+        });
+
+        document.getElementById("confirmNo").addEventListener("click", function () {
+            rowToDelete = null;
+            document.getElementById("deletePopup").classList.remove("active");
+        });
+
+        // Search functionality
+        document.getElementById("searchInput").addEventListener("input", function() {
+            const searchQuery = this.value.toLowerCase();
+            const rows = document.querySelectorAll("#courseTable tbody tr");
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td");
+                let isMatch = false;
+                cells.forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(searchQuery)) {
+                        isMatch = true;
+                    }
+                });
+                row.style.display = isMatch ? "" : "none";
+            });
+        });
+    </script>
+</body>
+</html>
